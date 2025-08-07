@@ -1,0 +1,19 @@
+# @package _global_
+
+defaults:
+  - experiment: sd_mt_geom
+
+project_name: "lcmg_opensource"
+task_name: "inference"
+seed: 42
+
+trainer:
+  _target_: lightning.pytorch.trainer.Trainer
+  accelerator: gpu
+  devices: 1
+  precision: "32"
+
+paths:
+  root_dir: "."
+  data_dir: "./data/"
+  output_dir: "./outputs/"

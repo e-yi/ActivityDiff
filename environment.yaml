@@ -1,0 +1,33 @@
+name: activityDiff
+
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+
+dependencies:
+  - python=3.10
+  - pytorch
+  - pytorch-cuda=12.1
+  - numpy
+  - scikit-learn
+  - ca-certificates
+  - openssl
+  - wandb
+  - tensorboard
+  - rdkit
+  - certifi
+  - hydra-core==1.3.2
+  - hydra-colorlog==1.2.0
+  - rich
+  - lightning
+  - einops
+  - jupyter
+  - pre-commit
+  - pip
+  - pip:
+    - -f https://data.dgl.ai/wheels/cu121/repo.html
+    - dgl
+    - rootutils
+    - packmetric

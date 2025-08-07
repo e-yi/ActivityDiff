@@ -1,0 +1,93 @@
+# @package _global_
+
+tags: ["opensource", "geom", "inference"]
+
+model:
+  _target_: lcmg.models.LCMGModule
+
+  net:
+    _target_: lcmg.nets.MGraphTransformer
+    _partial_: true
+    n_layers: 12
+    n_heads: 4
+    din_v: ???  # specified by train_dataset_info
+    din_e: ???  # specified by train_dataset_info
+    din_pos: ???  # specified by train_dataset_info
+    din_g: ???
+    dh_v: 128
+    dh_e: 64
+    dh_g: 128
+    de_geo: 32
+    norm: True
+
+  fg_init_type: "normed_snr"
+  fg_in_dim: 4
+  snr_gamma: 5
+  kekulize_sampling_test_mols: true
+
+  train_dataset_info: ??? 
+  num_diffusion_timesteps: 500
+
+  diffusion_units:
+    v_pos:
+      _target_: lcmg.diffusion.ENNormalDiffusion
+      _partial_: true
+      betas:
+        _target_: lcmg.diffusion.get_named_beta_schedule
+        schedule_name: "cosine"
+        num_diffusion_timesteps: ${....num_diffusion_timesteps}
+        nu: 2.5
+      model_pred_type: "start_x"
+
+    v_atom_type:
+      _target_: lcmg.diffusion.CategoricalDiffusion
+      _partial_: true
+      class_probs: ???  # specified by train_dataset_info
+      betas:
+        _target_: lcmg.diffusion.get_named_beta_schedule
+        schedule_name: 'cosine'
+        num_diffusion_timesteps: ${....num_diffusion_timesteps}
+        nu: 1
+      model_pred_type: "start_x"
+
+    v_atom_charge:
+      _target_: lcmg.diffusion.CategoricalDiffusion
+      _partial_: true
+      class_probs: ???
+      betas:
+        _target_: lcmg.diffusion.get_named_beta_schedule
+        schedule_name: "cosine"
+        num_diffusion_timesteps: ${....num_diffusion_timesteps}
+        nu: 1
+      model_pred_type: "start_x"
+
+    e_bond_type:
+      _target_: lcmg.diffusion.CategoricalDiffusion
+      _partial_: true
+      class_probs: ???
+      betas:
+        _target_: lcmg.diffusion.get_named_beta_schedule
+        schedule_name: "cosine"
+        num_diffusion_timesteps: ${....num_diffusion_timesteps}
+        nu: 1.5
+      model_pred_type: "start_x"
+
+  optimizer:
+    _target_: torch.optim.AdamW
+    _partial_: true
+    lr: 0.0001
+
+  scheduler:
+    _target_: torch.optim.lr_scheduler.ReduceLROnPlateau
+    _partial_: true
+
+  lambdas:
+    v_pos: 1
+    v_atom_type: 1
+    v_atom_charge: 1
+    e_bond_type: 2
+
+  do_sample_freq: 1
+  compile: false
+  learning_rate: 0.0001
+  warmup_steps: -1
