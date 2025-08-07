@@ -21,7 +21,7 @@ conda activate activitydiff
 
 ### 2. Download Pre-trained Models
 
-Download the pre-trained models from [Releases](https://github.com/your-username/ActivityDiff/releases) and place them in the project root:
+Download the pre-trained models from [Releases](https://github.com/e-yi/ActivityDiff/releases/tag/v1) and place them in the project root:
 
 - `epoch_064.ckpt` - Pre-trained diffusion model
 - `P15056.pth` - P15056 activity classifier
