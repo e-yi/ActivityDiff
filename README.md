@@ -14,7 +14,6 @@ Classifier-guided molecular generation using diffusion models. ActivityDiff enab
 git clone https://github.com/your-username/ActivityDiff.git
 cd ActivityDiff
 
-# Create conda environment
 conda env create -f environment.yaml
 conda activate activitydiff
 ```
